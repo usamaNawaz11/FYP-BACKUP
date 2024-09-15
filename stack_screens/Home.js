@@ -1,6 +1,5 @@
-import { StyleSheet, View, TouchableOpacity, Text, Image } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text, Image} from "react-native";
 import React from "react";
-import Icon from "react-native-vector-icons/FontAwesome";
 import {
   responsiveHeight,
   responsiveWidth,
@@ -9,40 +8,67 @@ import {
 
 export default function Home({ navigation }) {
   const Click = () => {
-    navigation.navigate("Welcome to Home");
+    navigation.navigate("Prediction");
   };
   const Weather = () => {
-    navigation.navigate("Welcome to Home");
+    navigation.navigate("Weather");
+  };
+  const Medicines = () => {
+    navigation.navigate("Medicines");
+  };
+  const BuySell = () => {
+    navigation.navigate("BuySell");
+  };
+  const drawer = () => {
+    navigation.openDrawer();
   };
   return (
     <View style={styles.container}>
       <View
         style={{
-          backgroundColor: "white",
-          height: responsiveHeight(8),
+          backgroundColor: "yellowgreen",
+          height: responsiveHeight(40),
           width: responsiveWidth(100),
-          marginTop: responsiveFontSize(2),
-          borderBottomLeftRadius: responsiveWidth(8),
-          borderBottomRightRadius: responsiveWidth(8),
+          borderBottomRightRadius: responsiveHeight(10),
+          borderBottomLeftRadius: responsiveHeight(10)
         }}
       >
-        <Icon
-          style={{ padding: responsiveWidth(3) }}
-          name="home"
-          size={responsiveWidth(12)}
-          color="seagreen"
-        ></Icon>
+        <TouchableOpacity onPress={drawer}>
+          <Image
+            style={{
+              height: responsiveHeight(4),
+              width: responsiveWidth(8),
+              alignSelf: "flex-start",
+              marginTop:responsiveHeight(5),
+              marginLeft:responsiveHeight(2)
+            }}
+            source={require("../assets/drawer.png")}
+          ></Image>
+        </TouchableOpacity>
+        <Image
+          style={{
+            height: 120,
+            width: 120,
+            justifyContent: "center",
+            alignSelf: "center",
+            marginTop: 50,
+            borderBottomRightRadius: 50,
+            borderTopLeftRadius: 50
+          }}
+          source={require("../assets/agricultural.png")}
+        ></Image>
+        <Text style={styles.text1}>Welcome to Farmer's Touch</Text>
       </View>
 
-      <View style={{height:responsiveHeight(57),width:responsiveWidth(100)}}>
+      <View style={{ height: responsiveHeight(60), width: responsiveWidth(100) }}>
         <View
           style={{
             flexDirection: "row",
             justifyContent: "center",
-            marginTop:responsiveHeight(8),
+            marginTop: responsiveHeight(8),
           }}
         >
-          <TouchableOpacity style={styles.button1} onPress={Click}>
+          <TouchableOpacity style={styles.button1} onPress={Medicines}>
             <Image
               style={{
                 height: responsiveHeight(10),
@@ -82,32 +108,32 @@ export default function Home({ navigation }) {
             ></Image>
             <Text style={styles.text}>Crop Disease</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button4} onPress={Click}>
+          <TouchableOpacity style={styles.button4} onPress={BuySell}>
             <Image
               style={{
                 height: responsiveHeight(10),
                 width: responsiveWidth(20),
                 alignSelf: "center",
-              }}npm 
+              }} npm
               source={require("../assets/buy.png")}
-              
+
             ></Image>
 
             <Text style={styles.text}>Buy & Sell</Text>
           </TouchableOpacity>
         </View>
       </View>
-      <View
+      {/* <View
         style={{
-          height:responsiveHeight(35),
-          width:responsiveWidth(100),
+          height: responsiveHeight(10),
+          width: responsiveWidth(100),
           borderTopStartRadius: responsiveWidth(10),
           borderTopRightRadius: responsiveWidth(10),
-          backgroundColor: "#229265",
+          backgroundColor: "yellowgreen",
           justifyContent: "center",
         }}
       >
-      </View>
+      </View> */}
     </View>
   );
 }
@@ -152,8 +178,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: {
-    fontSize: responsiveFontSize(3),
+    fontSize: responsiveFontSize(2),
     color: "black",
     textAlign: "center",
   },
+  text1: {
+    textAlign: 'center',
+    fontSize: responsiveFontSize(3),
+    paddingTop: responsiveHeight(3),
+    color:'white'
+  }
 });

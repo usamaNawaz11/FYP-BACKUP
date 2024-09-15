@@ -5,6 +5,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Alert
 } from "react-native";
 import {
   responsiveHeight,
@@ -16,19 +17,39 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../Firebase/Firebase.config";
 export default function SignUp({ navigation }) {
   const [username, setusername] = useState("");
-  const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
+  const [email, setEmail] = useState('');
+
+  const validateEmail = (email) => {
+    // Regular expression to match email format
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const emailPattern2 = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[A-Z|a-z]([A-Z|a-z0-9-]*[A-Z|a-z0-9])?$/;
+
+
+    if (emailPattern.test(email) || emailPattern2.test(email)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const SignIN = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        alert("your account has been created");
-        navigation.navigate("Welcome to Home");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        alert(errorMessage);
-      });
+    if (validateEmail(email)) {
+      Alert.alert('Success', 'Email format is valid.');
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          alert("your account has been created");
+          navigation.navigate("Welcome to Home");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          alert(errorMessage);
+        });
+
+    } else {
+      Alert.alert('Error', 'Invalid email format.');
+    }
   };
   const home = () => {
     navigation.navigate("Sign In");
@@ -53,7 +74,7 @@ export default function SignUp({ navigation }) {
       <TextInput
         style={styles.input}
         placeholder="Email"
-        onChangeText={(email) => setemail(email)}
+        onChangeText={(email) => setEmail(email)}
         value={email}
         placeholderTextColor={"black"}
         keyboardType="email-address"
@@ -88,19 +109,19 @@ const styles = StyleSheet.create({
   container: {
     height: responsiveHeight(100),
     width: responsiveWidth(100),
-    backgroundColor: "#f3fffa",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: "#f3fffa"
   },
   image: {
-    marginTop: responsiveHeight(5),
+    marginTop: responsiveHeight(7),
     width: responsiveWidth(30),
     height: responsiveHeight(15),
+    alignSelf: 'center'
   },
   text1: {
     fontSize: responsiveFontSize(5),
     fontStyle: "normal",
     color: "seagreen",
+    textAlign: 'center'
   },
   text2: {
     fontSize: responsiveFontSize(3),
@@ -112,13 +133,14 @@ const styles = StyleSheet.create({
   input: {
     marginTop: responsiveHeight(3),
     paddingLeft: responsiveWidth(2),
-    height: responsiveHeight(10),
+    height: responsiveHeight(7),
     width: responsiveWidth(90),
     borderBottomWidth: responsiveWidth(0.5),
     borderLeftWidth: responsiveWidth(0.3),
     borderRadius: responsiveWidth(5),
     borderColor: "#26c485",
     color: "black",
+    alignSelf: 'center'
   },
   button: {
     margin: responsiveHeight(3),
@@ -130,5 +152,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: responsiveWidth(0.5),
     borderBottomColor: "#26c485",
     backgroundColor: "white",
+    alignSelf: 'center'
   },
 });

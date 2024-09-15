@@ -5,6 +5,8 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  ScrollView,KeyboardAvoidingView, Platform
+
 } from "react-native";
 import {
   responsiveHeight,
@@ -14,10 +16,17 @@ import {
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../Firebase/Firebase.config";
 import { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function Signin({ navigation }) {
+  const [username, setUsername] = useState("");
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
-  const Clickme = () => {
+
+  const Clickme = async () => {
+    await AsyncStorage.setItem("user", username);
+    await AsyncStorage.setItem("email", email);
+    await AsyncStorage.setItem("password", password);
+
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         navigation.navigate("Welcome to Home");
@@ -33,7 +42,11 @@ export default function Signin({ navigation }) {
     navigation.navigate("Sign up");
   };
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    style={{ flex: 1 }}
+  >
+    <ScrollView contentContainerStyle={styles.container}  keyboardShouldPersistTaps="always" >
       <Image
         style={styles.image}
         source={require("../assets/agricultural.png")}
@@ -41,7 +54,15 @@ export default function Signin({ navigation }) {
       <Text style={styles.text1}>Farmer's Touch</Text>
       <TextInput
         style={styles.input1}
-        placeholder="Name"
+        placeholder="Username"
+        onChangeText={(username) => setUsername(username)}
+        value={username}
+        placeholderTextColor={"black"}
+        autoCapitalize="none"
+      ></TextInput>
+      <TextInput
+        style={styles.input2}
+        placeholder="Email"
         onChangeText={(email) => setemail(email)}
         value={email}
         placeholderTextColor={"black"}
@@ -61,7 +82,7 @@ export default function Signin({ navigation }) {
         <View style={{ flexDirection: "row" }}>
           <Image
             style={{
-              height:responsiveHeight(5),
+              height: responsiveHeight(5),
               width: responsiveWidth(10),
               alignSelf: "flex-start",
             }}
@@ -84,7 +105,9 @@ export default function Signin({ navigation }) {
           </Text>
         </TouchableOpacity>
       </Text>
-    </View>
+    </ScrollView>
+      </KeyboardAvoidingView>
+
   );
 }
 const styles = StyleSheet.create({
@@ -92,8 +115,9 @@ const styles = StyleSheet.create({
     height: responsiveHeight(100),
     width: responsiveWidth(100),
     backgroundColor: "#f3fffa",
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center'
+
   },
   image: {
     marginTop: responsiveHeight(5),
@@ -113,7 +137,7 @@ const styles = StyleSheet.create({
     paddingLeft: responsiveWidth(10),
   },
   input1: {
-    marginTop:responsiveHeight(5),
+    marginTop: responsiveHeight(5),
     paddingLeft: responsiveWidth(2),
     height: responsiveHeight(10),
     width: responsiveWidth(90),
@@ -124,7 +148,7 @@ const styles = StyleSheet.create({
     color: "black",
   },
   input2: {
-    marginTop: responsiveHeight(1),
+    marginTop: responsiveHeight(2),
     paddingLeft: responsiveWidth(2),
     height: responsiveHeight(10),
     width: responsiveWidth(90),
@@ -138,7 +162,7 @@ const styles = StyleSheet.create({
     margin: responsiveHeight(3),
     height: responsiveHeight(5),
     width: responsiveWidth(60),
-    borderBottomRightRadius:responsiveWidth(90),
+    borderBottomRightRadius: responsiveWidth(90),
     borderRightColor: "#26c485",
     borderRightWidth: responsiveWidth(5),
     borderBottomWidth: responsiveWidth(.5),
